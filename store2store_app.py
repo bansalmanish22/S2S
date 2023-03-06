@@ -1,31 +1,12 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 # *1. reading the utils file (has libraries and custom functions)*
-
-# In[2]:
-
-
 from utils import *
-
-
-# In[1]:
-
 
 st.markdown("<h1 style='text-align: center; color: black;'>Store to Store Transfer Engine</h1> \n <h4 style='text-align: center; color: black;font-style: italic;'>To begin please select Brand and Country on the sidebar</h4>", unsafe_allow_html=True)
 # st.markdown("<h4 style='text-align: center; color: black;font-style: italic;'>To begin please select Brand and Country on the sidebar</h4>", unsafe_allow_html=True)
 
-
-# In[ ]:
-
-
 country_to_use = st.sidebar.selectbox('Select Country',['UAE','KSA','EGY','BAH','KWT'])
 country_to_use  = [country_to_use ]
 brand_to_use = st.sidebar.selectbox('Select Brand',['Lacoste','Swarovski','Guess'])
-
-
-# In[ ]:
-
 
 if brand_to_use == 'Lacoste':
     st.image("https://logos-download.com/wp-content/uploads/2016/02/Lacoste_logo_horizontal.png")
@@ -34,16 +15,9 @@ elif brand_to_use == 'Swarovski':
 elif brand_to_use == 'Guess':
     st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Guess_logo.svg/2560px-Guess_logo.svg.png")
 
-
-# In[ ]:
-
-
 with st.sidebar.form(key='my_form_to_submit'):
+
     submit_button = st.form_submit_button(label='Submit')
-
-
-# In[ ]:
-
 
 if submit_button:
     with st.spinner('Wait for it...'):
@@ -65,14 +39,13 @@ if submit_button:
         link_to_gglsht1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT1YDqLV3OqdRVsVL2ka3K60_RgMdTFoP86_YISo0hpSCAFK-mLbL8FlobpaiYpbHOOFFlgMztJeuHE/pub?output=xlsx'
         try:
             main_df = read_from_googlesheet( link_to_gglsht1 , sheet_name='s2s.csv')
-
-            print(f' shape of main_df_org : {main_df_org.shape}')
+            print(f' shape of main_df : {main_df.shape}')
         except Exception:
             traceback.print_exc()
             print("Exception thrown.")
         
         # print(f'shape of main_df : {main_df.shape}')
-        '''2. Data from googlesheet loaded'''
+        '''2. Data from looker loaded'''
         print(f'User has selected {country_to_use} to run Store to Store')
         
         main_df['qty_sales']= np.where((main_df['dm_soh_sales.season_desc']== 'BASIC') | (main_df['dm_soh_sales.season_desc']== 'REGULAR') , main_df.total_quantity_sold_6_months , main_df.total_quantity_sold_45_days)
@@ -130,13 +103,12 @@ if submit_button:
             # ''' imputing all the values in stock_cover == np.inf (because of 0 avg sales) with the corresponding Target cover'''
             df['stock_cover'] = np.where(df.stock_cover == np.inf, df.Target_cover , df.stock_cover)
             # df['stock_cover_donor'] = [np.inf if df.avg_monthly_sales_qty_donor[i] == 0 else round((df.soh_donor[i]/df.avg_monthly_sales_qty_donor[i]),2) for i in range(0,len(df)) ]
-            df['stock_status'] = np.where((df.store_name == country_warehouse_name) & (df.soh > 0) , 'donor' , 'neutral') #look this
+            df['stock_status'] = np.where((df.store_name == country_warehouse_name) & (df.soh > 0) , 'donor' , 'neutral')
             df['stock_status'] = np.where( df.ideal_soh_incl_mdq > (df.soh + df.in_transit_qty) , 'recepient', 'donor')
             df['stock_status'] = np.where( (df.ideal_soh_incl_mdq) == (df.soh + df.in_transit_qty) , 'neutral',df['stock_status'] )
-
+        
             df['donate_qty'] = np.where( (df.soh > df.ideal_soh_incl_mdq) , df.soh - (df.ideal_soh_incl_mdq) , 0)
             df['required_qty'] = np.where( df.ideal_soh_incl_mdq > (df.soh + df.in_transit_qty) , df.ideal_soh_incl_mdq  - (df.soh + df.in_transit_qty) , 0)
-
             df['stock_status'] = np.where((df['donate_qty'] == 0) & (df['required_qty'] == 0) , 'neutral', df['stock_status'])
             
             '''4. Transfer logic begins'''
@@ -199,7 +171,10 @@ if submit_button:
         
                     s2s_output = s2s_output.append(donor_sub, ignore_index=True)  
         
-            print(f'        Total unique prod_ids : {len(total_uniq_prod_ids)}\n                    % of prod_id valid for s2s : {round(100*len(prod_id_valid_for_s2s)/len(total_uniq_prod_ids),2)}% \n                    % of prod_ids that went through Greedy algo : {round(100*len(rqd_qty_basis_dist_cnt)/len(total_uniq_prod_ids),2)}% \n                    % of prod_ids that went through sales contr based allocation algo : {round(100*len(sales_dist_basis_cnt)/len(total_uniq_prod_ids),2)}%')
+            print(f'        Total unique prod_ids : {len(total_uniq_prod_ids)}\n\
+                    % of prod_id valid for s2s : {round(100*len(prod_id_valid_for_s2s)/len(total_uniq_prod_ids),2)}% \n\
+                    % of prod_ids that went through Greedy algo : {round(100*len(rqd_qty_basis_dist_cnt)/len(total_uniq_prod_ids),2)}% \n\
+                    % of prod_ids that went through sales contr based allocation algo : {round(100*len(sales_dist_basis_cnt)/len(total_uniq_prod_ids),2)}%')
             
             '''5. Final data prep begins'''
             # ''' logic to get donated_qty for each donor in s2s_output'''
@@ -259,7 +234,7 @@ if submit_button:
             # recep_soh_op['recep_soh_pct_change'] = round((100*(recep_soh_op.after_alloc_SOH - recep_soh_op.before_alloc_SOH))/recep_soh_op.after_alloc_SOH,0)
             # recep_soh_op.to_csv(metric_path + '\\' + 'recipient_SOH_analysis.csv')
         
-            st.success('Hurray ðŸŽ‰ðŸŽ‰ Allocation Done! ðŸŽ‰ðŸŽ‰, You can Download the output . In case of any issues and suggestions please reach out to manish.bansal@chalhoub.com')
+            st.success('Hurray 🎉🎉 Allocation Done! 🎉🎉, You can Download the output . In case of any issues and suggestions please reach out to mayank.joshi@chalhoub.com')
             st.balloons()
             st.snow()
             df_xlsx = to_excel(df_sheet = {'focus':s2s_output_focus, 'whole':s2s_output_whole 
@@ -269,10 +244,9 @@ if submit_button:
                                            # 'Recep_SOH_analysis':recep_soh_op
                                            })
             
-            st.download_button(label='ðŸ“¥ Download Store to Store Output',
+            st.download_button(label='📥 Download Store to Store Output',
                                             data=df_xlsx ,
                                             file_name= c+'_store2store_output.xlsx')
             
             st.dataframe(s2s_output_focus)
     
-
