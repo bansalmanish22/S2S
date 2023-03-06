@@ -234,7 +234,7 @@ if submit_button:
             # recep_soh_op['recep_soh_pct_change'] = round((100*(recep_soh_op.after_alloc_SOH - recep_soh_op.before_alloc_SOH))/recep_soh_op.after_alloc_SOH,0)
             # recep_soh_op.to_csv(metric_path + '\\' + 'recipient_SOH_analysis.csv')
         
-            st.success('Hurray 🎉🎉 Allocation Done! 🎉🎉, You can Download the output . In case of any issues and suggestions please reach out to mayank.joshi@chalhoub.com')
+            st.success('Hurray 🎉🎉 Allocation Done! 🎉🎉, You can Download the output . In case of any issues and suggestions please reach out to manish.bansal@chalhoub.com')
             st.balloons()
             st.snow()
             df_xlsx = to_excel(df_sheet = {'focus':s2s_output_focus, 'whole':s2s_output_whole 
