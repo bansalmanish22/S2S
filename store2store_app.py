@@ -154,8 +154,8 @@ if submit_button:
                         donor_sub = allocation_algo(donor_sub, recepient_sub, donor_qty_col = 'donate_qty', recep_qty_col = 'required_qty' , store_name_col = 'store_name')
                         donor_sub.insert(loc = donor_sub.shape[1] - len(recepient_sub.store_name.unique()) ,column = 'algo_used',value = 'Greedy')
                         donor_sub = data_prep_v1(donor_sub, recepient_sub)
-                        donor_sub['key'] = donor_sub['recipient_store_name'] + '_' + donor_sub['prod_id']
-                        recepient_sub['key'] = recepient_sub['store_name'] + '_' + recepient_sub['prod_id']
+                        donor_sub['key'] = str(donor_sub['recipient_store_name']) + '_' + str(donor_sub['prod_id'])
+                        recepient_sub['key'] = str(recepient_sub['store_name']) + '_' + str(recepient_sub['prod_id'])
                         donor_sub = donor_sub.merge(recepient_sub.drop('country',axis=1) , on = 'key' , how='left' , suffixes = ('_donor','_recipient'))
                     else:
                         sales_dist_basis_cnt.append(i)
@@ -165,8 +165,8 @@ if submit_button:
                         donor_sub = allocation_algo(donor_sub, recepient_sub, donor_qty_col = 'donate_qty', recep_qty_col = 'proportionate_rqd_qty' , store_name_col = 'store_name')
                         donor_sub.insert(loc = donor_sub.shape[1] - len(recepient_sub.store_name.unique()) ,column = 'algo_used',value = 'Proportionate')
                         donor_sub = data_prep_v1(donor_sub, recepient_sub)
-                        donor_sub['key'] = donor_sub['recipient_store_name'] + '_' + donor_sub['prod_id']
-                        recepient_sub['key'] = recepient_sub['store_name'] + '_' + recepient_sub['prod_id']
+                        donor_sub['key'] = str(donor_sub['recipient_store_name']) + '_' + str(donor_sub['prod_id'])
+                        recepient_sub['key'] = str(recepient_sub['store_name']) + '_' + str(recepient_sub['prod_id'])
                         donor_sub = donor_sub.merge(recepient_sub.drop('country',axis=1) , on = 'key' , how='left' , suffixes = ('_donor','_recipient'))
         
                     s2s_output = s2s_output.append(donor_sub, ignore_index=True)  
@@ -180,9 +180,9 @@ if submit_button:
             # ''' logic to get donated_qty for each donor in s2s_output'''
             temp = s2s_output[['store_name_donor', 'prod_id_donor','original_can_donate_qty','qty_received']].groupby(['store_name_donor', 'prod_id_donor','original_can_donate_qty']).sum().reset_index()
             temp.columns = ['store_name_donor', 'prod_id_donor','original_can_donate_qty','donated_qty']
-            temp['key2'] = temp.store_name_donor + temp.prod_id_donor
+            temp['key2'] = str(temp.store_name_donor) + str(temp.prod_id_donor)
         
-            s2s_output['key2'] = s2s_output.store_name_donor + s2s_output.prod_id_donor
+            s2s_output['key2'] = str(s2s_output.store_name_donor) + str(s2s_output.prod_id_donor)
             s2s_output = s2s_output.merge(temp[['key2','donated_qty']] , on='key2', how='left')
             
             
