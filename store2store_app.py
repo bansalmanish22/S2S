@@ -48,10 +48,10 @@ if submit_button:
         '''2. Data from looker loaded'''
         print(f'User has selected {country_to_use} to run Store to Store')
         
-        main_df['qty_sales']= np.where((main_df['dm_soh_sales.season_desc']== 'BASIC') | (main_df['dm_soh_sales.season_desc']== 'REGULAR') , main_df.total_quantity_sold_6_months , main_df.total_quantity_sold_45_days)
-        main_df['net_sales_usd']= np.where((main_df['dm_soh_sales.season_desc']== 'BASIC') | (main_df['dm_soh_sales.season_desc']== 'REGULAR') , main_df.net_sales_amount_usd_6_months , main_df.net_sales_amount_usd_45_days)
-        
-        main_df.drop(['net_sales_amount_usd_6_months', 'net_sales_amount_usd_45_days','total_quantity_sold_6_months', 'total_quantity_sold_45_days'], axis=1, inplace=True)
+        main_df['qty_sales']= np.where((main_df['Products Season']== 'BASIC') | (main_df['Products Season']== 'REGULAR') , main_df['Total Quantity Sold 6 months'] , main_df['Total Quantity Sold 45 days'])
+        main_df['net_sales_usd']= np.where((main_df['Products Season']== 'BASIC') | (main_df['Products Season']== 'REGULAR') , main_df['Net Sales Amount USD 6 months'] , main_df['Net Sales Amount USD 45 days'])
+
+        main_df.drop(['Net Sales Amount USD 6 months', 'Net Sales Amount USD 45 days','Total Quantity Sold 6 months', 'Total Quantity Sold 45 days'], axis=1, inplace=True)
         main_df.shape
         
         cols = ['country','store_name','vpn_desc','vpn','prod_id','size','season','taxonomy_class','soh','in_transit_qty' ,'qty_sales','net_sales_usd']
