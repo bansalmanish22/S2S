@@ -1,6 +1,8 @@
-pandas==1.4.3
+pandas==1.2.5
 numpy==1.23.1
 pyxlsb==1.0.9
 streamlit==1.12.0
 openpyxl
 xlsxwriter
+vega_datasets==0.9.0
+altair==4.1.0
