@@ -26,7 +26,8 @@ def grade(df, store_col = '',group_on='',measure='', ratio = [60,30,10] , grade_
             sub_df[group_on+'_grade'] = pd.cut(sub_df['cum_pct'], bins=bins, labels=labels)
             sub_df = sub_df.drop(['cum_pct'],axis=1)
             sub_df[group_on+'_grade'] = np.where(sub_df[measure] <= 0, 'Z', sub_df[group_on+'_grade'])
-            fin_df = fin_df.append(sub_df)
+            #fin_df = fin_df.append(sub_df)
+            fin_df = pd.concat([fin_df,sub_df])
     else:
         sub_df = pd.DataFrame()
         #fin_df = fin_df.append(sub_df)
@@ -70,10 +71,12 @@ def data_prep_v1(donor_df, recepient_sub):
         tmp_2 = pd.DataFrame(donor_df.iloc[i, algo_used_col_index+1: ]).reset_index()
         tmp_2.columns=['recipient_store_name','qty_received']
         tmp_2.qty_received = tmp_2.qty_received.fillna(0)
-        tmp_main = tmp_1.append(tmp_2).reset_index(drop=True)
+        #tmp_main = tmp_1.append(tmp_2).reset_index(drop=True)
+        tmp_main = pd.concat([tmp_1,tmp_2], ignore_index=True)
         tmp_main.iloc[:,:-2] = tmp_main.iloc[:,:-2].ffill()
         tmp_main = tmp_main.iloc[1:,:].reset_index(drop=True)
-        main_df = main_df.append(tmp_main,ignore_index=True)
+        #main_df = main_df.append(tmp_main,ignore_index=True)
+        main_df = pd.concat([main_df,tmp_main], ignore_index=True)
 
     main_df = main_df.reset_index(drop=True)
     return main_df
