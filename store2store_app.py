@@ -26,9 +26,9 @@ if submit_button:
         try:
             cover_mdq = read_from_googlesheet( link_to_gglsht , sheet_name='cover_and_mdq')
             cntry_wise_store_vpn_used = read_from_googlesheet( link_to_gglsht , sheet_name='cntry_wise_store_vpn_to_be_used')
-            store_grading_lacoste = read_from_googlesheet( link_to_gglsht , sheet_name='store_grading_lacoste')
+            store_grading = read_from_googlesheet( link_to_gglsht , sheet_name='store_grading')
         
-            print(f' shape of cover_mdq : {cover_mdq.shape} \n  shape of cntry_wise_store_vpn_used : {cntry_wise_store_vpn_used.shape} \n shape of store_grading_lacoste : {store_grading_lacoste.shape}')
+            print(f' shape of cover_mdq : {cover_mdq.shape} \n  shape of cntry_wise_store_vpn_used : {cntry_wise_store_vpn_used.shape} \n shape of store_grading : {store_grading.shape}')
         except Exception:
             traceback.print_exc()
             print("Exception thrown.")
@@ -36,9 +36,9 @@ if submit_button:
         '''1. User inputs for Cover, VPN, Store, Grading loaded'''
         
         # *3. load data and filtering it for user inputs,rename cols and create sales_status cols*
-        link_to_gglsht1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT1YDqLV3OqdRVsVL2ka3K60_RgMdTFoP86_YISo0hpSCAFK-mLbL8FlobpaiYpbHOOFFlgMztJeuHE/pub?output=xlsx'
+        link_to_gglsht1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVyp3RHkQ8A2Iouj8rzca4rGFBEHC2dHPf67PSL-tVoTWLAw00Q0TDm14NIYS-3Je0iT8eOzUgEmEH/pub?output=xlsx'
         try:
-            main_df = read_from_googlesheet( link_to_gglsht1 , sheet_name='s2s.csv')
+            main_df = read_from_googlesheet( link_to_gglsht1 , sheet_name='s2s_guess.csv')
             print(f' shape of main_df : {main_df.shape}')
         except Exception:
             traceback.print_exc()
@@ -77,7 +77,7 @@ if submit_button:
             print(c, ':', df.shape)
             
             # '''getting location grade by joining df with cover_mdq file'''
-            df = df.merge(store_grading_lacoste[store_grading_lacoste.country==c].reset_index(drop=True), left_on='store_name',right_on='Store Name Actual', how='left')
+            df = df.merge(store_grading[store_grading.country==c].reset_index(drop=True), left_on='store_name',right_on='Store Name Actual', how='left')
             df.drop('Store Name Actual', axis=1, inplace=True)
             
             # '''Grade Seasonal and Basic Products separately and then concat both dfs'''
