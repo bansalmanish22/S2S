@@ -88,7 +88,7 @@ def to_excel(df_sheet = {}):
         df.to_excel(writer, sheet_name=sheet_name)
         df.to_excel(writer, sheet_name=sheet_name)
     workbook = writer.book
-    writer.save()
+    writer.close()
     processed_data = output.getvalue()
     return processed_data
 
