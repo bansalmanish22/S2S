@@ -22,7 +22,14 @@ with st.sidebar.form(key='my_form_to_submit'):
 if submit_button:
     with st.spinner('Wait for it...'):
         # *2. User Inputs (google sheet to fetch inputs)*
-        link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'
+        #link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'
+        if brand_to_use == 'Lacoste':
+            link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'
+        elif brand_to_use == 'Swarovski':
+            link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'
+        elif brand_to_use == 'Guess':
+            link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'
+	
         try:
             cover_mdq = read_from_googlesheet( link_to_gglsht , sheet_name='cover_and_mdq')
             cntry_wise_store_vpn_used = read_from_googlesheet( link_to_gglsht , sheet_name='cntry_wise_store_vpn_to_be_used')
@@ -36,9 +43,18 @@ if submit_button:
         '''1. User inputs for Cover, VPN, Store, Grading loaded'''
         
         # *3. load data and filtering it for user inputs,rename cols and create sales_status cols*
-        link_to_gglsht1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVyp3RHkQ8A2Iouj8rzca4rGFBEHC2dHPf67PSL-tVoTWLAw00Q0TDm14NIYS-3Je0iT8eOzUgEmEH/pub?output=xlsx'
+        #link_to_gglsht1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVyp3RHkQ8A2Iouj8rzca4rGFBEHC2dHPf67PSL-tVoTWLAw00Q0TDm14NIYS-3Je0iT8eOzUgEmEH/pub?output=xlsx'
+        if brand_to_use == 'Lacoste':
+            link_to_gglsht1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVyp3RHkQ8A2Iouj8rzca4rGFBEHC2dHPf67PSL-tVoTWLAw00Q0TDm14NIYS-3Je0iT8eOzUgEmEH/pub?output=xlsx'
+            sheet_to_take='s2s_lacoste.csv'
+        elif brand_to_use == 'Swarovski':
+            link_to_gglsht1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVyp3RHkQ8A2Iouj8rzca4rGFBEHC2dHPf67PSL-tVoTWLAw00Q0TDm14NIYS-3Je0iT8eOzUgEmEH/pub?output=xlsx'
+            sheet_to_take='s2s_swarovski.csv'
+        elif brand_to_use == 'Guess':
+            link_to_gglsht1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVyp3RHkQ8A2Iouj8rzca4rGFBEHC2dHPf67PSL-tVoTWLAw00Q0TDm14NIYS-3Je0iT8eOzUgEmEH/pub?output=xlsx'
+            sheet_to_take='s2s_guess.csv'
         try:
-            main_df = read_from_googlesheet( link_to_gglsht1 , sheet_name='s2s_guess.csv')
+            main_df = read_from_googlesheet( link_to_gglsht1 , sheet_name=sheet_to_take)
             print(f' shape of main_df : {main_df.shape}')
         except Exception:
             traceback.print_exc()
