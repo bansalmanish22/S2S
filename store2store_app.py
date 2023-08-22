@@ -169,7 +169,9 @@ if submit_button:
                         recepient_sub['key'] = str(recepient_sub['store_name']) + '_' + str(recepient_sub['prod_id'])
                         donor_sub = donor_sub.merge(recepient_sub.drop('country',axis=1) , on = 'key' , how='left' , suffixes = ('_donor','_recipient'))
         
-                    s2s_output = s2s_output.append(donor_sub, ignore_index=True)  
+                    #s2s_output = s2s_output.append(donor_sub, ignore_index=True)
+                    s2s_output = pd.concat([s2s_output,donor_sub],ignore_index=True)
+                    
         
             print(f'        Total unique prod_ids : {len(total_uniq_prod_ids)}\n\
                     % of prod_id valid for s2s : {round(100*len(prod_id_valid_for_s2s)/len(total_uniq_prod_ids),2)}% \n\
