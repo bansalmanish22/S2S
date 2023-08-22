@@ -29,7 +29,10 @@ def grade(df, store_col = '',group_on='',measure='', ratio = [60,30,10] , grade_
             fin_df = fin_df.append(sub_df)
     else:
         sub_df = pd.DataFrame()
-        fin_df = fin_df.append(sub_df)
+        #fin_df = fin_df.append(sub_df)
+        #added below instead since append does'nt support now
+        fin_df = pd.concat([fin_df,sub_df])
+    
     
     return fin_df
 
