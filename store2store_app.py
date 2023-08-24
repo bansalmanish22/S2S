@@ -26,7 +26,7 @@ if submit_button:
         if brand_to_use == 'Lacoste':
             link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'
         elif brand_to_use == 'Swarovski':
-            link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'
+            link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT33Zqpf1lJTW1BdK_oNdzkD-orEIW3ce6wqFZxHDTiJAVPNA8sv5wVoODbfDMr6JnGdbYcym4CPybE/pub?output=xlsx'
         elif brand_to_use == 'Guess':
             link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'
 	
@@ -48,7 +48,7 @@ if submit_button:
             link_to_gglsht1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVyp3RHkQ8A2Iouj8rzca4rGFBEHC2dHPf67PSL-tVoTWLAw00Q0TDm14NIYS-3Je0iT8eOzUgEmEH/pub?output=xlsx'
             sheet_to_take='s2s_lacoste.csv'
         elif brand_to_use == 'Swarovski':
-            link_to_gglsht1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVyp3RHkQ8A2Iouj8rzca4rGFBEHC2dHPf67PSL-tVoTWLAw00Q0TDm14NIYS-3Je0iT8eOzUgEmEH/pub?output=xlsx'
+            link_to_gglsht1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSPzZ-p3jjDmhdCgd3SCEBJ4IR_EVIdpJ-Q_VL3p4NdgJoy83QTl5t-xfL3B1kbOsVJ_rzgg_DF-jir/pub?output=xlsx'
             sheet_to_take='s2s_swarovski.csv'
         elif brand_to_use == 'Guess':
             link_to_gglsht1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVyp3RHkQ8A2Iouj8rzca4rGFBEHC2dHPf67PSL-tVoTWLAw00Q0TDm14NIYS-3Je0iT8eOzUgEmEH/pub?output=xlsx'
