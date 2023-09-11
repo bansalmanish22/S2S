@@ -23,6 +23,9 @@ if submit_button:
     with st.spinner('Wait for it...'):
         # *2. User Inputs (google sheet to fetch inputs)*
         link_to_gglsht_oms = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTLfhPgM2o1vG4-JdnN7y4begv2u5sTxYpMNvxiwSVtlLYdr6xuGjXIkeyJcjpTWjkzto0HrjGWsSSl/pub?output=xlsx'
+	oms_ship = read_from_googlesheet( link_to_gglsht_oms , sheet_name='s2s_oms.csv')
+	oms_ship_cols = ['sku','loc_name','ship_qty']
+	oms_ship.columns = oms_ship_cols
         if brand_to_use == 'Lacoste':
             link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'
         elif brand_to_use == 'Swarovski':
@@ -33,10 +36,7 @@ if submit_button:
             cover_mdq = read_from_googlesheet( link_to_gglsht , sheet_name='cover_and_mdq')
             cntry_wise_store_vpn_used = read_from_googlesheet( link_to_gglsht , sheet_name='cntry_wise_store_vpn_to_be_used')
             store_grading = read_from_googlesheet( link_to_gglsht , sheet_name='store_grading')
-	    oms_ship = read_from_googlesheet( link_to_gglsht_oms , sheet_name='s2s_oms.csv')
-	    oms_ship_cols = ['sku','loc_name','ship_qty']
-	    oms_ship.columns = oms_ship_cols
-        
+
             print(f' shape of cover_mdq : {cover_mdq.shape} \n  shape of cntry_wise_store_vpn_used : {cntry_wise_store_vpn_used.shape} \n shape of store_grading : {store_grading.shape}')
         except Exception:
             traceback.print_exc()
