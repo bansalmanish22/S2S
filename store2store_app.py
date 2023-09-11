@@ -82,12 +82,12 @@ if submit_button:
         main_df['soh'] = np.where(main_df['soh'] < 0, 0,main_df['soh'])
 	
 	## making average sales and adding oms last 30 days shipped qty into sales column
-		main_df['qty_sales'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR') , round(main_df.qty_sales/6,2) , round(main_df.qty_sales/1.5,2))			
+	main_df['qty_sales'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR') , round(main_df.qty_sales/6,2) , round(main_df.qty_sales/1.5,2))			
         main_df['net_sales_usd'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR'), round(main_df.net_sales_usd/6,2) , round(main_df.net_sales_usd/1.5,2))
-		main_df['season'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR') , 'BASIC' , main_df.season)
+	main_df['season'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR') , 'BASIC' , main_df.season)
         main_df = main_df.merge(oms_ship, left_on=['prod_id','store_name'],right_on=['sku','loc_name'], how='left')
-		main_df['ship_qty] = main_df['ship_qty].fillna(0)
-	    main_df['qty_sales'] = main_df['qty_sales'] +main_df['ship_qty']
+	main_df['ship_qty] = main_df['ship_qty].fillna(0)
+	main_df['qty_sales'] = main_df['qty_sales'] +main_df['ship_qty']
         main_df.drop(['sku','loc_name','ship_qty], axis=1, inplace=True)
  
 
