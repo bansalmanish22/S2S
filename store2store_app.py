@@ -1,7 +1,7 @@
 # *1. reading the utils file (has libraries and custom functions)*
 from utils import *
 
-st.markdown("<h1 style='text-align: center; color: black;'>Store to Store Transfer Engine</h1> \n <h4 style='text-align: center; color: black;font-style: italic;'>To begin please select Brand and Country on the sidebar</h4>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: black;'>SMART [STOCK MOVEMENT AND REPLENISHMENT TOOL] </h1> \n <h4 style='text-align: center; color: black;font-style: italic;'>To begin please select Brand and Country on the sidebar</h4>", unsafe_allow_html=True)
 # st.markdown("<h4 style='text-align: center; color: black;font-style: italic;'>To begin please select Brand and Country on the sidebar</h4>", unsafe_allow_html=True)
 
 country_to_use = st.sidebar.selectbox('Select Country',['KSA','UAE'])
@@ -232,7 +232,9 @@ if submit_button:
             
             s2s_output.qty_received = np.where((s2s_output.algo_used == 'Proportionate')&(s2s_output.qty_received == 0) , 'Not received' , s2s_output.qty_received)
             s2s_output_whole = s2s_output[cols_2]
-            s2s_output_focus = s2s_output[['country','store_name_donor','prod_id_donor','vpn_donor','stock_status_donor','original_can_donate_qty','donated_qty','qty_remaining_after_alloc','recipient_store_name', 'required_qty','qty_received','stock_cover_recipient','new_stock_cover_recipient']]
+            s2s_output_focus = s2s_output[['country','store_name_donor','prod_id_donor','vpn_donor','stock_status_donor','original_can_donate_qty','recipient_store_name','qty_received']]
+            filter_out = ["0.0","Not received",0.0]
+            s2s_output_focus = s2s_output_focus[~s2s_output_focus['qty_received'].isin(filter_out)]
              
             '''6. Output Data Prep Done'''
             
