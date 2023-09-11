@@ -227,8 +227,9 @@ if submit_button:
             
             cols_2 = ['country', 'store_city_donor', 'store_name_donor','Store Grading_donor', 'prod_id_donor', 'stock_status_donor','prod_id_grade_donor', 'vpn_desc_donor', 'taxonomy_class_donor','vpn_donor', 'size_donor', 'season_donor', 'soh_donor','new_soh_donor','stock_cover_donor','new_stock_cover_donor',
                'in_transit_qty_donor', 'qty_sales_donor','avg_monthly_sales_qty_donor', 'net_sales_usd_donor', 'MDQ_donor','Target_cover_donor', 'sell_thru_donor', 'ideal_soh_incl_mdq_donor','original_can_donate_qty', 'donated_qty','qty_remaining_after_alloc',
-                'algo_used', 'recipient_store_name','qty_received', 'store_city_recipient','Store Grading_recipient', 'prod_id_recipient','stock_status_recipient', 'soh_recipient','new_soh_recipient','stock_cover_recipient','new_stock_cover_recipient','in_transit_qty_recipient', 'qty_sales_recipient',
-                'avg_monthly_sales_qty_recipient', 'net_sales_usd_recipient','MDQ_recipient', 'Target_cover_recipient','sell_thru_recipient','ideal_soh_incl_mdq_recipient', 'required_qty', 'avg_sales_prop','proportionate_rqd_qty' ]
+                'algo_used', 'recipient_store_name','qty_received' ]
+            #cols exclude = [''store_city_recipient','Store Grading_recipient', 'prod_id_recipient','stock_status_recipient', 'soh_recipient','new_soh_recipient','stock_cover_recipient','new_stock_cover_recipient','in_transit_qty_recipient', 'qty_sales_recipient',
+                #'avg_monthly_sales_qty_recipient', 'net_sales_usd_recipient','MDQ_recipient', 'Target_cover_recipient','sell_thru_recipient','ideal_soh_incl_mdq_recipient', 'required_qty', 'avg_sales_prop','proportionate_rqd_qty']
             
             s2s_output.qty_received = np.where((s2s_output.algo_used == 'Proportionate')&(s2s_output.qty_received == 0) , 'Not received' , s2s_output.qty_received)
             s2s_output_whole = s2s_output[cols_2]
@@ -267,7 +268,7 @@ if submit_button:
             st.success('Hurray 🎉🎉 Allocation Done! 🎉🎉, You can Download the output . In case of any issues and suggestions please reach out to manish.bansal@chalhoub.com')
             st.balloons()
             st.snow()
-            df_xlsx = to_excel(df_sheet = {'focus':s2s_output_focus, 'whole':s2s_output_whole 
+            df_xlsx = to_excel(df_sheet = {'focus':s2s_output_focus, 'whole':s2s_output_whole, 'raw_data':df,
                                            # ,'Donor_stock_cover_analysis':donor_sc_op,
                                            # 'Recep_stock_cover_analysis':recep_sc_op,
                                            # 'Donor_SOH_analysis':donor_soh_op,
