@@ -74,7 +74,7 @@ if submit_button:
         main_df.drop(['Net Sales Amount USD 6 months', 'Net Sales Amount USD 45 days'], axis=1, inplace=True)
         main_df.shape
         
-        cols = ['country','store_name','vpn_desc','vpn','prod_id','size','season','taxonomy_class','soh','in_transit_qty' ,'qty_sales','net_sales_usd','qty_sales_6mths','qty_sales_45days']
+        cols = ['country','store_name','vpn','prod_id','size','season','taxonomy_class','item_desc','soh','in_transit_qty','qty_sales_6mths','qty_sales_45days','qty_sales','net_sales_usd']
         main_df.columns = cols
         
         ## converting all negative values in qty_sales and net_sales_usd to 0
@@ -144,7 +144,7 @@ if submit_button:
             rqd_qty_basis_dist_cnt = []
             sales_dist_basis_cnt = []
         
-            req_cols = ['country','store_name','Store Grading','prod_id','stock_status','prod_id_grade','vpn_desc','taxonomy_class','vpn','size','season','soh','in_transit_qty','qty_sales','avg_monthly_sales_qty','MDQ','Target_cover','sell_thru',
+            req_cols = ['country','store_name','Store Grading','prod_id','stock_status','prod_id_grade','item_desc','taxonomy_class','vpn','size','season','soh','in_transit_qty','qty_sales','avg_monthly_sales_qty','MDQ','Target_cover','sell_thru',
              'ideal_soh_incl_mdq','donate_qty', 'required_qty']
         
             # req_cols = ['store_name','Store Grading','vpn','prod_id','prod_id_grade','stock_status','avg_monthly_sales_qty','MDQ','soh','ideal_soh_incl_mdq','sell_thru', 'donate_qty', 'required_qty']
@@ -225,7 +225,7 @@ if submit_button:
             s2s_output['new_stock_cover_donor'] = [np.inf if s2s_output.avg_monthly_sales_qty_donor[i] == 0 else round((s2s_output.new_soh_donor[i]/s2s_output.avg_monthly_sales_qty_donor[i]),2) for i in range(0,len(s2s_output)) ]
             s2s_output['new_stock_cover_recipient'] = [np.inf if s2s_output.avg_monthly_sales_qty_recipient[i] == 0 else round((s2s_output.new_soh_recipient[i]/s2s_output.avg_monthly_sales_qty_recipient[i]),2) for i in range(0,len(s2s_output)) ]
             
-            cols_2 = ['country', 'store_city_donor', 'store_name_donor','Store Grading_donor', 'prod_id_donor', 'stock_status_donor','prod_id_grade_donor', 'vpn_desc_donor', 'taxonomy_class_donor','vpn_donor', 'size_donor', 'season_donor', 'soh_donor','new_soh_donor','stock_cover_donor','new_stock_cover_donor',
+            cols_2 = ['country', 'store_city_donor', 'store_name_donor','Store Grading_donor', 'prod_id_donor', 'stock_status_donor','prod_id_grade_donor', 'item_desc_donor', 'taxonomy_class_donor','vpn_donor', 'size_donor', 'season_donor', 'soh_donor','new_soh_donor','stock_cover_donor','new_stock_cover_donor',
                'in_transit_qty_donor', 'qty_sales_donor','avg_monthly_sales_qty_donor', 'MDQ_donor','Target_cover_donor', 'sell_thru_donor', 'ideal_soh_incl_mdq_donor','original_can_donate_qty', 'donated_qty','qty_remaining_after_alloc',
                 'algo_used', 'recipient_store_name','qty_received' ]
             #cols exclude = [''store_city_recipient','Store Grading_recipient', 'prod_id_recipient','stock_status_recipient', 'soh_recipient','new_soh_recipient','stock_cover_recipient','new_stock_cover_recipient','in_transit_qty_recipient', 'qty_sales_recipient',
