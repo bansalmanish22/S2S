@@ -74,7 +74,7 @@ if submit_button:
         main_df.drop(['Net Sales Amount USD 6 months', 'Net Sales Amount USD 45 days','Total Quantity Sold 6 months', 'Total Quantity Sold 45 days'], axis=1, inplace=True)
         main_df.shape
         
-        cols = ['country','store_name','vpn_desc','vpn','prod_id','size','season','taxonomy_class','soh','in_transit_qty' ,'qty_sales','net_sales_usd']
+        cols = ['country','store_name','vpn_desc','vpn','prod_id','size','season','taxonomy_class','soh','in_transit_qty' ,'qty_sales','net_sales_usd','qty_sales_6mths','qty_sales_45days']
         main_df.columns = cols
         
         ## converting all negative values in qty_sales and net_sales_usd to 0
@@ -88,7 +88,7 @@ if submit_button:
         main_df = main_df.merge(oms_ship,left_on=['prod_id','store_name'],right_on=['sku','loc_name'], how='left')
         main_df['ship_qty'] = main_df['ship_qty'].fillna(0)
         main_df['qty_sales'] = main_df['qty_sales'] +main_df['ship_qty']
-        main_df.drop(['sku','loc_name','ship_qty'], axis=1, inplace=True)
+        main_df.drop(['sku','loc_name', 'net_sales_usd'], axis=1, inplace=True)
 
         # for c in ['KSA']:
         '''3. Store to Store for selected Country and Brand begins'''
