@@ -71,7 +71,7 @@ if submit_button:
         main_df['qty_sales']= np.where((main_df['Products Season']== 'BASIC') | (main_df['Products Season']== 'REGULAR') , main_df['Total Quantity Sold 6 months'] , main_df['Total Quantity Sold 45 days'])
         main_df['net_sales_usd']= np.where((main_df['Products Season']== 'BASIC') | (main_df['Products Season']== 'REGULAR') , main_df['Net Sales Amount USD 6 months'] , main_df['Net Sales Amount USD 45 days'])
 
-        main_df.drop(['Net Sales Amount USD 6 months', 'Net Sales Amount USD 45 days','Total Quantity Sold 6 months', 'Total Quantity Sold 45 days'], axis=1, inplace=True)
+        main_df.drop(['Net Sales Amount USD 6 months', 'Net Sales Amount USD 45 days'], axis=1, inplace=True)
         main_df.shape
         
         cols = ['country','store_name','vpn_desc','vpn','prod_id','size','season','taxonomy_class','soh','in_transit_qty' ,'qty_sales','net_sales_usd','qty_sales_6mths','qty_sales_45days']
