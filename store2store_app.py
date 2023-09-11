@@ -81,10 +81,8 @@ if submit_button:
         main_df['qty_sales'] = np.where(main_df['qty_sales'] < 0, 0, main_df['qty_sales'])
         main_df['net_sales_usd'] = np.where(main_df['net_sales_usd'] < 0, 0, main_df['net_sales_usd'])
         main_df['soh'] = np.where(main_df['soh'] < 0, 0,main_df['soh'])
-        main_df.head(2)
-
+ 
 	## making average sales and adding oms last 30 days shipped qty into sales column
-	
 	main_df['qty_sales'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR') , round(main_df.qty_sales/6,2) , round(main_df.qty_sales/1.5,2))
         main_df['net_sales_usd'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR'), round(main_df.net_sales_usd/6,2) , round(main_df.net_sales_usd/1.5,2))
 	main_df['season'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR') , 'BASIC' , main_df.season)
