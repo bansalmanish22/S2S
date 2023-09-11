@@ -6,7 +6,7 @@ st.markdown("<h1 style='text-align: center; color: black;'>Store to Store Transf
 
 country_to_use = st.sidebar.selectbox('Select Country',['UAE','KSA','EGY','BAH','KWT'])
 country_to_use  = [country_to_use ]
-brand_to_use = st.sidebar.selectbox('Select Brand',['Lacoste','Swarovski','Guess'])
+brand_to_use = st.sidebar.selectbox('Select Brand',['Swarovski','Guess'])
 
 link_to_gglsht_oms = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTLfhPgM2o1vG4-JdnN7y4begv2u5sTxYpMNvxiwSVtlLYdr6xuGjXIkeyJcjpTWjkzto0HrjGWsSSl/pub?output=xlsx'
 oms_ship = read_from_googlesheet( link_to_gglsht_oms , sheet_name='s2s_oms.csv')
