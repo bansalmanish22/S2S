@@ -19,16 +19,15 @@ with st.sidebar.form(key='my_form_to_submit'):
 
     submit_button = st.form_submit_button(label='Submit')
 
+link_to_gglsht_oms = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTLfhPgM2o1vG4-JdnN7y4begv2u5sTxYpMNvxiwSVtlLYdr6xuGjXIkeyJcjpTWjkzto0HrjGWsSSl/pub?output=xlsx'
+oms_ship = read_from_googlesheet( link_to_gglsht_oms , sheet_name='s2s_oms.csv')
+oms_ship_cols = ['sku','loc_name','ship_qty']
+oms_ship.columns = oms_ship_cols
+
 if submit_button:
     with st.spinner('Wait for it...'):
         # *2. User Inputs (google sheet to fetch inputs)*
-	    
-        link_to_gglsht_oms = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTLfhPgM2o1vG4-JdnN7y4begv2u5sTxYpMNvxiwSVtlLYdr6xuGjXIkeyJcjpTWjkzto0HrjGWsSSl/pub?output=xlsx'
-	    
-	oms_ship = read_from_googlesheet( link_to_gglsht_oms , sheet_name='s2s_oms.csv')
-	oms_ship_cols = ['sku','loc_name','ship_qty']
-	oms_ship.columns = oms_ship_cols
-	    
+	        
         if brand_to_use == 'Lacoste':
             link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'
         elif brand_to_use == 'Swarovski':
