@@ -66,21 +66,21 @@ if submit_button:
         # print(f'shape of main_df : {main_df.shape}')
         '''2. Data from looker loaded'''
         print(f'User has selected {country_to_use} to run Store to Store')
-	    main_df['qty_sales']= np.where((main_df['Products Season']== 'BASIC') | (main_df['Products Season']== 'REGULAR') , main_df['Total Quantity Sold 6 months'] , main_df['Total Quantity Sold 45 days'])
-	    main_df['net_sales_usd']= np.where((main_df['Products Season']== 'BASIC') | (main_df['Products Season']== 'REGULAR') , main_df['Net Sales Amount USD 6 months'] , main_df['Net Sales Amount USD 45 days'])
-	    main_df.drop(['Net Sales Amount USD 6 months', 'Net Sales Amount USD 45 days','Total Quantity Sold 6 months', 'Total Quantity Sold 45 days'], axis=1, inplace=True)
-	    cols = ['country','store_name','vpn_desc','vpn','prod_id','size','season','taxonomy_class','soh','in_transit_qty' ,'qty_sales','net_sales_usd']
-	    main_df.columns = cols
-	    main_df['qty_sales'] = np.where(main_df['qty_sales'] < 0, 0, main_df['qty_sales'])
-	    main_df['net_sales_usd'] = np.where(main_df['net_sales_usd'] < 0, 0, main_df['net_sales_usd'])
-	    main_df['soh'] = np.where(main_df['soh'] < 0, 0,main_df['soh'])
-	    main_df['qty_sales'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR') , round(main_df.qty_sales/6,2) , round(main_df.qty_sales/1.5,2))			
-	    main_df['net_sales_usd'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR'), round(main_df.net_sales_usd/6,2) , round(main_df.net_sales_usd/1.5,2))
-	    main_df['season'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR') , 'BASIC' , main_df.season)
-	    main_df = main_df.merge(oms_ship, left_on=['prod_id','store_name'],right_on=['sku','loc_name'], how='left')
-	    main_df['ship_qty] = main_df['ship_qty].fillna(0)
-	    main_df['qty_sales'] = main_df['qty_sales'] +main_df['ship_qty']
-	    main_df.drop(['sku','loc_name','ship_qty], axis=1, inplace=True)
+    main_df['qty_sales']= np.where((main_df['Products Season']== 'BASIC') | (main_df['Products Season']== 'REGULAR') , main_df['Total Quantity Sold 6 months'] , main_df['Total Quantity Sold 45 days'])
+    main_df['net_sales_usd']= np.where((main_df['Products Season']== 'BASIC') | (main_df['Products Season']== 'REGULAR') , main_df['Net Sales Amount USD 6 months'] , main_df['Net Sales Amount USD 45 days'])
+    main_df.drop(['Net Sales Amount USD 6 months', 'Net Sales Amount USD 45 days','Total Quantity Sold 6 months', 'Total Quantity Sold 45 days'], axis=1, inplace=True)
+    cols = ['country','store_name','vpn_desc','vpn','prod_id','size','season','taxonomy_class','soh','in_transit_qty' ,'qty_sales','net_sales_usd']
+    main_df.columns = cols
+    main_df['qty_sales'] = np.where(main_df['qty_sales'] < 0, 0, main_df['qty_sales'])
+    main_df['net_sales_usd'] = np.where(main_df['net_sales_usd'] < 0, 0, main_df['net_sales_usd'])
+    main_df['soh'] = np.where(main_df['soh'] < 0, 0,main_df['soh'])
+    main_df['qty_sales'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR') , round(main_df.qty_sales/6,2) , round(main_df.qty_sales/1.5,2))			
+    main_df['net_sales_usd'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR'), round(main_df.net_sales_usd/6,2) , round(main_df.net_sales_usd/1.5,2))
+    main_df['season'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR') , 'BASIC' , main_df.season)
+    main_df = main_df.merge(oms_ship, left_on=['prod_id','store_name'],right_on=['sku','loc_name'], how='left')
+    main_df['ship_qty] = main_df['ship_qty].fillna(0)
+    main_df['qty_sales'] = main_df['qty_sales'] +main_df['ship_qty']
+    main_df.drop(['sku','loc_name','ship_qty], axis=1, inplace=True)
  
         # for c in ['KSA']:
         '''3. Store to Store for selected Country and Brand begins'''
