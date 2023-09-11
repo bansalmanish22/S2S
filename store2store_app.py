@@ -1,7 +1,7 @@
 # *1. reading the utils file (has libraries and custom functions)*
 from utils import *
 
-st.markdown("<h1 style='text-align: center; color: black;'>SMART [STOCK MOVEMENT AND REPLENISHMENT TOOL] </h1> \n <h4 style='text-align: center; color: black;font-style: italic;'>To begin please select Brand and Country on the sidebar</h4>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: black;'>SMART [Stock Movement And Replenishment Tool] </h1> \n <h4 style='text-align: center; color: black;font-style: italic;'>To begin please select Brand and Country on the sidebar</h4>", unsafe_allow_html=True)
 # st.markdown("<h4 style='text-align: center; color: black;font-style: italic;'>To begin please select Brand and Country on the sidebar</h4>", unsafe_allow_html=True)
 
 country_to_use = st.sidebar.selectbox('Select Country',['KSA','UAE'])
@@ -144,7 +144,7 @@ if submit_button:
             rqd_qty_basis_dist_cnt = []
             sales_dist_basis_cnt = []
         
-            req_cols = ['country','store_name','Store Grading','prod_id','stock_status','prod_id_grade','vpn_desc','taxonomy_class','vpn','size','season','soh','in_transit_qty','qty_sales','avg_monthly_sales_qty','net_sales_usd','MDQ','Target_cover','sell_thru',
+            req_cols = ['country','store_name','Store Grading','prod_id','stock_status','prod_id_grade','vpn_desc','taxonomy_class','vpn','size','season','soh','in_transit_qty','qty_sales','avg_monthly_sales_qty','MDQ','Target_cover','sell_thru',
              'ideal_soh_incl_mdq','donate_qty', 'required_qty']
         
             # req_cols = ['store_name','Store Grading','vpn','prod_id','prod_id_grade','stock_status','avg_monthly_sales_qty','MDQ','soh','ideal_soh_incl_mdq','sell_thru', 'donate_qty', 'required_qty']
