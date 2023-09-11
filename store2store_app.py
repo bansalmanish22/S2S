@@ -25,18 +25,18 @@ if submit_button:
         #link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'
         if brand_to_use == 'Lacoste':
             link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'
+	    link_to_gglsht_oms = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTLfhPgM2o1vG4-JdnN7y4begv2u5sTxYpMNvxiwSVtlLYdr6xuGjXIkeyJcjpTWjkzto0HrjGWsSSl/pub?output=xlsx'
         elif brand_to_use == 'Swarovski':
             link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT33Zqpf1lJTW1BdK_oNdzkD-orEIW3ce6wqFZxHDTiJAVPNA8sv5wVoODbfDMr6JnGdbYcym4CPybE/pub?output=xlsx'
+	    link_to_gglsht_oms = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTLfhPgM2o1vG4-JdnN7y4begv2u5sTxYpMNvxiwSVtlLYdr6xuGjXIkeyJcjpTWjkzto0HrjGWsSSl/pub?output=xlsx'
         elif brand_to_use == 'Guess':
             link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'
-	# oms sales file
-	link_to_gglsht_oms = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTLfhPgM2o1vG4-JdnN7y4begv2u5sTxYpMNvxiwSVtlLYdr6xuGjXIkeyJcjpTWjkzto0HrjGWsSSl/pub?output=xlsx'
-	
+	    link_to_gglsht_oms = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTLfhPgM2o1vG4-JdnN7y4begv2u5sTxYpMNvxiwSVtlLYdr6xuGjXIkeyJcjpTWjkzto0HrjGWsSSl/pub?output=xlsx'
+		
         try:
             cover_mdq = read_from_googlesheet( link_to_gglsht , sheet_name='cover_and_mdq')
             cntry_wise_store_vpn_used = read_from_googlesheet( link_to_gglsht , sheet_name='cntry_wise_store_vpn_to_be_used')
             store_grading = read_from_googlesheet( link_to_gglsht , sheet_name='store_grading')
-	    #oms sale file
 	    oms_ship = read_from_googlesheet( link_to_gglsht_oms , sheet_name='s2s_oms.csv')
 	    oms_ship_cols = ['sku','loc_name','ship_qty']
 	    oms_ship.columns = oms_ship_cols
