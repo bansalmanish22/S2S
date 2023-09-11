@@ -29,11 +29,17 @@ if submit_button:
             link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT33Zqpf1lJTW1BdK_oNdzkD-orEIW3ce6wqFZxHDTiJAVPNA8sv5wVoODbfDMr6JnGdbYcym4CPybE/pub?output=xlsx'
         elif brand_to_use == 'Guess':
             link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'
+	# oms sales file
+	link_to_gglsht_oms = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTLfhPgM2o1vG4-JdnN7y4begv2u5sTxYpMNvxiwSVtlLYdr6xuGjXIkeyJcjpTWjkzto0HrjGWsSSl/pub?output=xlsx'
 	
         try:
             cover_mdq = read_from_googlesheet( link_to_gglsht , sheet_name='cover_and_mdq')
             cntry_wise_store_vpn_used = read_from_googlesheet( link_to_gglsht , sheet_name='cntry_wise_store_vpn_to_be_used')
             store_grading = read_from_googlesheet( link_to_gglsht , sheet_name='store_grading')
+	    #oms sale file
+	    oms_ship = read_from_googlesheet( link_to_gglsht_oms , sheet_name='s2s_oms.csv')
+	    oms_ship_cols = ['sku','loc_name','ship_qty']
+	    oms_ship.columns = oms_ship_cols
         
             print(f' shape of cover_mdq : {cover_mdq.shape} \n  shape of cntry_wise_store_vpn_used : {cntry_wise_store_vpn_used.shape} \n shape of store_grading : {store_grading.shape}')
         except Exception:
@@ -78,6 +84,16 @@ if submit_button:
         main_df['net_sales_usd'] = np.where(main_df['net_sales_usd'] < 0, 0, main_df['net_sales_usd'])
         main_df['soh'] = np.where(main_df['soh'] < 0, 0,main_df['soh'])
         main_df.head(2)
+
+	## making average sales and adding oms last 30 days shipped qty into sales column
+	
+	main_df['qty_sales'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR') , round(main_df.qty_sales/6,2) , round(main_df.qty_sales/1.5,2))
+        main_df['net_sales_usd'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR'), round(main_df.net_sales_usd/6,2) , round(main_df.net_sales_usd/1.5,2))
+	main_df['season'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR') , 'BASIC' , main_df.season)
+        main_df = main_df.merge(oms_ship, left_on=['prod_id','store_name'],right_on=['sku','loc_name'], how='left')
+	main_df['ship_qty] = main_df['ship_qty].fillna(0)
+	main_df['qty_sales'] = main_df['qty_sales'] +main_df['ship_qty']
+        main_df.drop(['sku','loc_name','ship_qty], axis=1, inplace=True)
         
         
         # for c in ['KSA']:
@@ -97,8 +113,8 @@ if submit_button:
             df.drop('Store Name Actual', axis=1, inplace=True)
             
             # '''Grade Seasonal and Basic Products separately and then concat both dfs'''
-            basic_prod_gd = grade(df[df.season == 'BASIC'], store_col = 'store_name', group_on='prod_id', measure='net_sales_usd', ratio=[60,30,10], grade_labels = ["A","B","C"] )
-            seas_prod_gd = grade(df[df.season != 'BASIC'], store_col = 'store_name', group_on='prod_id', measure='net_sales_usd', ratio=[60,30,10], grade_labels = ["nA","nB","nC"])
+            basic_prod_gd = grade(df[df.season == 'BASIC'], store_col = 'store_name', group_on='prod_id', measure='qty_sales', ratio=[60,30,10], grade_labels = ["A","B","C"] )
+            seas_prod_gd = grade(df[df.season != 'BASIC'], store_col = 'store_name', group_on='prod_id', measure='qty_sales', ratio=[60,30,10], grade_labels = ["nA","nB","nC"])
             prod_gd = pd.concat([basic_prod_gd,seas_prod_gd],axis=0).reset_index(drop=True)
             df = df.merge(prod_gd, left_on=['store_name','prod_id'], right_on = ['store_name','prod_id'] ,how='left',suffixes=('', '___y'))
             df.drop(df.filter(regex='_y$').columns, axis=1, inplace=True)
@@ -110,7 +126,7 @@ if submit_button:
                             how = 'left')
             df = df.drop(['key_0','Store grade','Product grade'],axis=1)
             
-            df['avg_monthly_sales_qty'] = np.where(df.season == 'BASIC', round(df.qty_sales/6,2) , round(df.qty_sales/1.5,2))
+            df['avg_monthly_sales_qty'] = round(df.qty_sales,2)
             df['sell_thru'] = round(df.qty_sales/(df.qty_sales + df.soh),2)
             df['ideal_soh_incl_mdq'] = np.maximum(np.ceil(df.avg_monthly_sales_qty * df.Target_cover) , df.MDQ)
             df['stock_cover'] = round(( df.soh/df.avg_monthly_sales_qty),2)
