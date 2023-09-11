@@ -8,6 +8,11 @@ country_to_use = st.sidebar.selectbox('Select Country',['UAE','KSA','EGY','BAH',
 country_to_use  = [country_to_use ]
 brand_to_use = st.sidebar.selectbox('Select Brand',['Lacoste','Swarovski','Guess'])
 
+link_to_gglsht_oms = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTLfhPgM2o1vG4-JdnN7y4begv2u5sTxYpMNvxiwSVtlLYdr6xuGjXIkeyJcjpTWjkzto0HrjGWsSSl/pub?output=xlsx'
+oms_ship = read_from_googlesheet( link_to_gglsht_oms , sheet_name='s2s_oms.csv')
+oms_ship_cols = ['sku','loc_name','ship_qty']
+oms_ship.columns = oms_ship_cols 
+
 if brand_to_use == 'Lacoste':
     st.image("https://logos-download.com/wp-content/uploads/2016/02/Lacoste_logo_horizontal.png")
 elif brand_to_use == 'Swarovski':
@@ -21,22 +26,18 @@ with st.sidebar.form(key='my_form_to_submit'):
 
 if submit_button:
     with st.spinner('Wait for it...'):
-        # *2. User Inputs (google sheet to fetch inputs)*    
+        # *2. User Inputs (google sheet to fetch inputs)*     
+        
         if brand_to_use == 'Lacoste':
             link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'
-	    link_to_gglsht_oms = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTLfhPgM2o1vG4-JdnN7y4begv2u5sTxYpMNvxiwSVtlLYdr6xuGjXIkeyJcjpTWjkzto0HrjGWsSSl/pub?output=xlsx'
         elif brand_to_use == 'Swarovski':
             link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT33Zqpf1lJTW1BdK_oNdzkD-orEIW3ce6wqFZxHDTiJAVPNA8sv5wVoODbfDMr6JnGdbYcym4CPybE/pub?output=xlsx'
-	    link_to_gglsht_oms = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTLfhPgM2o1vG4-JdnN7y4begv2u5sTxYpMNvxiwSVtlLYdr6xuGjXIkeyJcjpTWjkzto0HrjGWsSSl/pub?output=xlsx'
         elif brand_to_use == 'Guess':
             link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'	
-	    link_to_gglsht_oms = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTLfhPgM2o1vG4-JdnN7y4begv2u5sTxYpMNvxiwSVtlLYdr6xuGjXIkeyJcjpTWjkzto0HrjGWsSSl/pub?output=xlsx'
         try:
             cover_mdq = read_from_googlesheet( link_to_gglsht , sheet_name='cover_and_mdq')
             cntry_wise_store_vpn_used = read_from_googlesheet( link_to_gglsht , sheet_name='cntry_wise_store_vpn_to_be_used')
             store_grading = read_from_googlesheet( link_to_gglsht , sheet_name='store_grading')
-	    oms_ship = read_from_googlesheet( link_to_gglsht_oms , sheet_name='s2s_oms.csv')
-	
 
             print(f' shape of cover_mdq : {cover_mdq.shape} \n  shape of cntry_wise_store_vpn_used : {cntry_wise_store_vpn_used.shape} \n shape of store_grading : {store_grading.shape}')
         except Exception:
@@ -81,14 +82,14 @@ if submit_button:
        
         main_df['net_sales_usd'] = np.where(main_df['net_sales_usd'] < 0, 0, main_df['net_sales_usd'])
         main_df['soh'] = np.where(main_df['soh'] < 0, 0,main_df['soh'])
-		main_df['qty_sales'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR') , round(main_df.qty_sales/6,2) , round(main_df.qty_sales/1.5,2))			
+        main_df['qty_sales'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR') , round(main_df.qty_sales/6,2) , round(main_df.qty_sales/1.5,2))
         main_df['net_sales_usd'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR'), round(main_df.net_sales_usd/6,2) , round(main_df.net_sales_usd/1.5,2))
-		main_df['season'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR') , 'BASIC' , main_df.season)
-        main_df = main_df.merge(oms_ship, left_on=['prod_id','store_name'],right_on=['sku','loc_name'], how='left')
-		main_df['ship_qty] = main_df['ship_qty].fillna(0)
-		main_df['qty_sales'] = main_df['qty_sales'] +main_df['ship_qty']
+        main_df['season'] = np.where((main_df.season == 'BASIC') | (main_df.season == 'REGULAR') , 'BASIC' , main_df.season)
+        main_df = main_df.merge(oms_ship,left_on=['prod_id','store_name'],right_on=['sku','loc_name'], how='left')
+        main_df['ship_qty'] = main_df['ship_qty].fillna(0)
+        main_df['qty_sales'] = main_df['qty_sales'] +main_df['ship_qty']
         main_df.drop(['sku','loc_name','ship_qty], axis=1, inplace=True)
- 
+
         # for c in ['KSA']:
         '''3. Store to Store for selected Country and Brand begins'''
         for c in country_to_use:
