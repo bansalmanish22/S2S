@@ -236,48 +236,19 @@ if submit_button:
             s2s_output_focus = s2s_output[['country','store_name_donor','prod_id_donor','vpn_donor','stock_status_donor','original_can_donate_qty','recipient_store_name','qty_received']]
             filter_out = ["0.0","Not received",0.0]
             s2s_output_focus = s2s_output_focus[~s2s_output_focus['qty_received'].isin(filter_out)]
+            #adding valid sku column in full data set df
+            df['valid_skus'] = np.where(df['prod_id'].isin (prod_id_valid_for_s2s), "yes", "no")
              
             '''6. Output Data Prep Done'''
-            
-            ## Stock cover change analysis
-            # donor_sc_op = s2s_output[['store_name_donor','Store Grading_donor','prod_id_donor', 'prod_id_grade_donor','stock_cover_donor','new_stock_cover_donor']].drop_duplicates().sort_values('prod_id_donor').reset_index(drop=True)
-            # donor_sc_op = donor_sc_op.groupby(['Store Grading_donor','prod_id_grade_donor'])['stock_cover_donor','new_stock_cover_donor'].apply(lambda x: (x >= 1).sum()).reset_index()
-            # donor_sc_op.columns = ['Store Grading_donor', 'prod_id_grade_donor', 'before_alloc_greater_than_1_SC_count_donor','after_alloc_greater_than_1_SC_count_donor']
-            # donor_sc_op['donor_sc_pct_change'] = round((100*(donor_sc_op.after_alloc_greater_than_1_SC_count_donor - donor_sc_op.before_alloc_greater_than_1_SC_count_donor))/donor_sc_op.before_alloc_greater_than_1_SC_count_donor,0)
-            # # donor_sc_op.to_csv(metric_path + '\\' + 'donor_sc_analysis.csv')
-            
-            # recep_sc_op = s2s_output[['store_name_recipient','Store Grading_recipient','prod_id_recipient', 'prod_id_grade_recipient','stock_cover_recipient','new_stock_cover_recipient']]
-            # recep_sc_op = recep_sc_op.groupby(['Store Grading_recipient','prod_id_grade_recipient'])['stock_cover_recipient','new_stock_cover_recipient'].apply(lambda x: (x >= 1).sum()).reset_index()
-            # recep_sc_op.columns = ['Store Grading_recipient','prod_id_grade_recipient', 'before_alloc_greater_than_1_SC_count_recep','after_alloc_greater_than_1_SC_count_recep']
-            # recep_sc_op['recep_sc_pct_change'] = round((100*(recep_sc_op.after_alloc_greater_than_1_SC_count_recep - recep_sc_op.before_alloc_greater_than_1_SC_count_recep))/recep_sc_op.before_alloc_greater_than_1_SC_count_recep,0)
-            # # recep_sc_op.to_csv(metric_path + '\\' + 'recipient_sc_analysis.csv')
-            
-            # ## SOH change analysis
-            # donor_soh_op = s2s_output[['store_name_donor','Store Grading_donor','prod_id_donor', 'prod_id_grade_donor','soh_donor','new_soh_donor']].drop_duplicates().sort_values('prod_id_donor').reset_index(drop=True)
-            # donor_soh_op = donor_soh_op.groupby(['Store Grading_donor','prod_id_grade_donor'])['soh_donor','new_soh_donor'].sum().reset_index()
-            # donor_soh_op.columns = ['Store Grading_donor', 'prod_id_grade_donor', 'before_alloc_SOH','after_alloc_SOH']
-            # donor_soh_op['donor_soh_pct_change'] = round((100*(donor_soh_op.after_alloc_SOH - donor_soh_op.before_alloc_SOH))/donor_soh_op.after_alloc_SOH,0)
-            # # donor_soh_op.to_csv(metric_path + '\\' + 'donor_SOH_analysis.csv')
-            
-            # recep_soh_op = s2s_output[['store_name_recipient','Store Grading_recipient','prod_id_recipient', 'prod_id_grade_recipient','soh_recipient','new_soh_recipient']]
-            # recep_soh_op = recep_soh_op.groupby(['Store Grading_recipient','prod_id_grade_recipient'])['soh_recipient','new_soh_recipient'].sum().reset_index()
-            # recep_soh_op.columns = ['Store Grading_recipient','prod_id_grade_recipient', 'before_alloc_SOH','after_alloc_SOH']
-            # recep_soh_op['recep_soh_pct_change'] = round((100*(recep_soh_op.after_alloc_SOH - recep_soh_op.before_alloc_SOH))/recep_soh_op.after_alloc_SOH,0)
-            # recep_soh_op.to_csv(metric_path + '\\' + 'recipient_SOH_analysis.csv')
-        
+                 
             st.success('Hurray 🎉🎉 Allocation Done! 🎉🎉, You can Download the output . In case of any issues and suggestions please reach out to manish.bansal@chalhoub.com')
             st.balloons()
             st.snow()
-            df_xlsx = to_excel(df_sheet = {'focus':s2s_output_focus, 'whole':s2s_output_whole, 'raw_data':df,
-                                           # ,'Donor_stock_cover_analysis':donor_sc_op,
-                                           # 'Recep_stock_cover_analysis':recep_sc_op,
-                                           # 'Donor_SOH_analysis':donor_soh_op,
-                                           # 'Recep_SOH_analysis':recep_soh_op
-                                           })
+            df_xlsx = to_excel(df_sheet = {'focus':s2s_output_focus, 'whole':s2s_output_whole, 'raw_data':df})
             
             st.download_button(label='📥 Download Store to Store Output',
                                             data=df_xlsx ,
-                                            file_name= c+'_store2store_output.xlsx')
+                                            file_name= brand_to_use+ '_'+ c +'_store2store_output.xlsx')
             
             st.dataframe(s2s_output_focus)
     
