@@ -107,8 +107,8 @@ if submit_button:
             df.drop('Store Name Actual', axis=1, inplace=True)
             
             # '''Grade Seasonal and Basic Products separately and then concat both dfs'''
-            basic_prod_gd = grade(df[df.season == 'BASIC'], store_col = 'store_name', group_on='prod_id', measure='qty_sales', ratio=[60,30,10], grade_labels = ["A","B","C"] )
-            seas_prod_gd = grade(df[df.season != 'BASIC'], store_col = 'store_name', group_on='prod_id', measure='qty_sales', ratio=[60,30,10], grade_labels = ["nA","nB","nC"])
+            basic_prod_gd = grade(df[df.season == 'BASIC'], store_col = 'store_name', group_on='prod_id', measure='qty_sales', ratio=[60,30,10], grade_labels = ["a_high","b_medium","c_low"] )
+            seas_prod_gd = grade(df[df.season != 'BASIC'], store_col = 'store_name', group_on='prod_id', measure='qty_sales', ratio=[60,30,10], grade_labels = ["na_high","nb_medium","nc_low"])
             prod_gd = pd.concat([basic_prod_gd,seas_prod_gd],axis=0).reset_index(drop=True)
             df = df.merge(prod_gd, left_on=['store_name','prod_id'], right_on = ['store_name','prod_id'] ,how='left',suffixes=('', '___y'))
             df.drop(df.filter(regex='_y$').columns, axis=1, inplace=True)
