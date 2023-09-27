@@ -1,7 +1,7 @@
 # *1. reading the utils file (has libraries and custom functions)*
 from utils import *
 
-st.markdown("<h1 style='text-align: center; color: black;'>SMART [Stock Movement And Replenishment Tool] </h1> \n <h4 style='text-align: center; color: black;font-style: italic;'>To begin please select Brand and Country on the sidebar</h4>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: black;'>SMART [Stock Management Auto Replenishment & Transfers] </h1> \n <h4 style='text-align: center; color: black;font-style: italic;'>To begin please select Brand and Country on the sidebar</h4>", unsafe_allow_html=True)
 # st.markdown("<h4 style='text-align: center; color: black;font-style: italic;'>To begin please select Brand and Country on the sidebar</h4>", unsafe_allow_html=True)
 
 country_to_use = st.sidebar.selectbox('Select Country',['KSA','UAE'])
