@@ -215,6 +215,7 @@ if submit_button:
             
             
             # '''calculating a few metrics'''
+            s2s_output['qty_received'] = s2s_output['qty_received'].astype('int')
             s2s_output['qty_remaining_after_alloc'] = s2s_output.soh_donor - s2s_output.donated_qty
             s2s_output['new_soh_donor'] = s2s_output.soh_donor -  s2s_output.donated_qty
             s2s_output['new_soh_recipient'] = s2s_output.soh_recipient + s2s_output.qty_received
