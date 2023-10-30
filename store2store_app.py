@@ -215,7 +215,6 @@ if submit_button:
             
             
             # '''calculating a few metrics'''
-            s2s_output['qty_received'] = s2s_output['qty_received'].astype('int')
             s2s_output['qty_remaining_after_alloc'] = s2s_output.soh_donor - s2s_output.donated_qty
             s2s_output['new_soh_donor'] = s2s_output.soh_donor -  s2s_output.donated_qty
             s2s_output['new_soh_recipient'] = s2s_output.soh_recipient + s2s_output.qty_received
@@ -232,7 +231,8 @@ if submit_button:
             #cols exclude = [''store_city_recipient','Store Grading_recipient', 'prod_id_recipient','stock_status_recipient', 'soh_recipient','new_soh_recipient','stock_cover_recipient','new_stock_cover_recipient','in_transit_qty_recipient', 'qty_sales_recipient',
                 #'avg_monthly_sales_qty_recipient', 'net_sales_usd_recipient','MDQ_recipient', 'Target_cover_recipient','sell_thru_recipient','ideal_soh_incl_mdq_recipient', 'required_qty', 'avg_sales_prop','proportionate_rqd_qty']
             
-            s2s_output.qty_received = np.where((s2s_output.algo_used == 'Proportionate')&(s2s_output.qty_received == 0) , 'Not received' , s2s_output.qty_received)
+            #s2s_output.qty_received = np.where((s2s_output.algo_used == 'Proportionate')&(s2s_output.qty_received == 0) , 'Not received' , s2s_output.qty_received)
+            s2s_output.qty_received = np.where((s2s_output.algo_used == 'Proportionate')&(s2s_output.qty_received == 0) , 0 , s2s_output.qty_received)
             s2s_output_whole = s2s_output[cols_2]
             s2s_output_focus = s2s_output[['country','store_name_donor','prod_id_donor','vpn_donor','stock_status_donor','original_can_donate_qty','recipient_store_name','qty_received']]
             filter_out = ["0.0","Not received",0.0]
