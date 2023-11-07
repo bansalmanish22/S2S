@@ -4,7 +4,7 @@ from utils import *
 st.markdown("<h1 style='text-align: center; color: black;'>SMART [Stock Management Auto Replenishment & Transfers] </h1> \n <h4 style='text-align: center; color: black;font-style: italic;'>To begin please select Brand and Country on the sidebar</h4>", unsafe_allow_html=True)
 # st.markdown("<h4 style='text-align: center; color: black;font-style: italic;'>To begin please select Brand and Country on the sidebar</h4>", unsafe_allow_html=True)
 
-country_to_use = st.sidebar.selectbox('Select Country',['KSA','UAE'])
+country_to_use = st.sidebar.selectbox('Select Country',['KSA','UAE','QAT','KWT','EGY','BAH'])
 country_to_use  = [country_to_use ]
 brand_to_use = st.sidebar.selectbox('Select Brand',['Swarovski','Guess'])
 
