@@ -6,15 +6,15 @@ st.markdown("<h1 style='text-align: center; color: black;'>SMART [Stock Manageme
 
 country_to_use = st.sidebar.selectbox('Select Country',['KSA','UAE','QAT','KWT','EGY','BAH'])
 country_to_use  = [country_to_use ]
-brand_to_use = st.sidebar.selectbox('Select Brand',['Swarovski','Guess'])
+brand_to_use = st.sidebar.selectbox('Select Brand',['Swarovski','Guess','Michael Kors'])
 
 link_to_gglsht_oms = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTLfhPgM2o1vG4-JdnN7y4begv2u5sTxYpMNvxiwSVtlLYdr6xuGjXIkeyJcjpTWjkzto0HrjGWsSSl/pub?output=xlsx'
 oms_ship = read_from_googlesheet( link_to_gglsht_oms , sheet_name='s2s_oms.csv')
 oms_ship_cols = ['sku','loc_name','ship_qty']
 oms_ship.columns = oms_ship_cols 
 
-if brand_to_use == 'Lacoste':
-    st.image("https://logos-download.com/wp-content/uploads/2016/02/Lacoste_logo_horizontal.png")
+if brand_to_use == 'Michael Kors':
+    st.image("https://logos-download.com/wp-content/uploads/2016/04/Michael_Kors_logo_wordmark_logotype.png")
 elif brand_to_use == 'Swarovski':
     st.image("https://en.vogue.me/wp-content/uploads/2014/06/SWA_wordmark_rgb_black.png")
 elif brand_to_use == 'Guess':
@@ -28,8 +28,8 @@ if submit_button:
     with st.spinner('Wait for it...'):
         # *2. User Inputs (google sheet to fetch inputs)*     
         
-        if brand_to_use == 'Lacoste':
-            link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJDmYDgIAzBkvzuwmbqfw31zltzF4c2XlQ47PP-CUJIBFuLkTMNlAUduacNLnp3H-jTSlIiKX2ePt3/pub?output=xlsx'
+        if brand_to_use == 'Michael Kors':
+            link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTyiphNvgpD8e3Ww66Noo88MMIu7KdAzd7Kf3Uak03ygTIqKttASeYjDzolbq2w2dpSkBWsKkmPZilR/pub?output=xlsx'
         elif brand_to_use == 'Swarovski':
             link_to_gglsht = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT33Zqpf1lJTW1BdK_oNdzkD-orEIW3ce6wqFZxHDTiJAVPNA8sv5wVoODbfDMr6JnGdbYcym4CPybE/pub?output=xlsx'
         elif brand_to_use == 'Guess':
@@ -48,9 +48,9 @@ if submit_button:
         
         # *3. load data and filtering it for user inputs,rename cols and create sales_status cols*
         #link_to_gglsht1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVyp3RHkQ8A2Iouj8rzca4rGFBEHC2dHPf67PSL-tVoTWLAw00Q0TDm14NIYS-3Je0iT8eOzUgEmEH/pub?output=xlsx'
-        if brand_to_use == 'Lacoste':
-            link_to_gglsht1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVyp3RHkQ8A2Iouj8rzca4rGFBEHC2dHPf67PSL-tVoTWLAw00Q0TDm14NIYS-3Je0iT8eOzUgEmEH/pub?output=xlsx'
-            sheet_to_take='s2s_lacoste.csv'
+        if brand_to_use == 'Michael Kors':
+            link_to_gglsht1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRq_5xuuUR7t-oDJRhrw227CqcPsHexiW6nXAHLDmQeodUeRcz3rlbJlSOGWjkqIFVDkR6jmCsgmsWW/pub?output=xlsx'
+            sheet_to_take='s2s_mk.csv'
         elif brand_to_use == 'Swarovski':
             link_to_gglsht1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSPzZ-p3jjDmhdCgd3SCEBJ4IR_EVIdpJ-Q_VL3p4NdgJoy83QTl5t-xfL3B1kbOsVJ_rzgg_DF-jir/pub?output=xlsx'
             sheet_to_take='s2s_swarovski.csv'
