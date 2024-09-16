@@ -256,7 +256,7 @@ if submit_button:
             size_availability['size_broken_before'] = np.where(size_availability['size_availability_before'] == 0, 'not available', np.where(size_availability['size_availability_before'] < 0.66, 'broken', 'healthy'))
             size_availability['size_broken_after'] = np.where( size_availability['size_availability_after'] == 0, 'not available', np.where(size_availability['size_availability_after'] < 0.66, 'broken', 'healthy'))
 
-            df_new = df_new.merge(size_availability,how = 'left', on = ['store_name','vpn'])
+            df_new = df_new.merge(size_availability[['size_availability_before','size_availability_after','size_broken_before', 'size_broken_after', 'store_name', 'vpn']],how = 'left', on = ['store_name','vpn'])
             s2s_output_focus = s2s_output_focus.merge(size_availability[['size_broken_before', 'size_broken_after', 'store_name', 'vpn']],how = 'left', right_on = ['store_name','vpn'], left_on = ['store_name_donor','vpn_donor'])
 
              
