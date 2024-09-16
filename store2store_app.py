@@ -239,6 +239,27 @@ if submit_button:
             s2s_output_focus = s2s_output_focus[~s2s_output_focus['qty_received'].isin(filter_out)]
             #adding valid sku column in full data set df
             df['valid_skus'] = np.where(df['prod_id'].isin (prod_id_valid_for_s2s), "yes", "no")
+
+            #adding logic for tagging broken size or health size vpn : row 243 to 261 added_160924_manish
+			donate_qty_focus = s2s_output_focus.groupby(['store_name_donor', 'prod_id_donor'])['qty_received'].sum().reset_index().rename(columns={'qty_received': 'donated_qty', 'store_name_donor': 'store_name','prod_id_donor':'prod_id'})
+			receive_qty_focus =s2s_output_focus.groupby(['recipient_store_name','prod_id_donor'])['qty_received'].sum().reset_index().rename(columns={'qty_received': 'received_qty', 'recipient_store_name': 'store_name','prod_id_donor':'prod_id'})
+			df_new = df.merge(donate_qty_focus,how = 'left', on = ['store_name','prod_id']).merge(receive_qty_focus,how = 'left', on = ['store_name','prod_id']).fillna(0)
+			df_new['soh_after'] = -df_new['donated_qty'] +df_new['received_qty'] +df_new['soh']
+			df_new['assortment_sizes_org'] = np.where((df_new['soh'].abs() + df_new['in_transit_qty'].abs() + df_new['qty_sales_6mths'].abs() + df_new['ship_qty'].abs()) > 0, 1, 0)
+			
+			df_new['assortment_sizes_before_transfer'] = np.where(df_new['soh'] > 0, 1, 0 )
+			df_new['assortment_sizes_after_transfer'] = np.where(df_new['soh_after'] > 0, 1, 0 )
+
+			size_availability = df_new.groupby(['store_name','vpn'])[['assortment_sizes_org','assortment_sizes_before_transfer','assortment_sizes_after_transfer']].sum().reset_index()
+			size_availability['size_availability_before'] = round(size_availability['assortment_sizes_before_transfer']/size_availability['assortment_sizes_org'],2)
+			size_availability['size_availability_after'] = round(size_availability['assortment_sizes_after_transfer']/size_availability['assortment_sizes_org'],2)
+			size_availability = size_availability.fillna(0)
+			size_availability['size_broken_before'] = np.where(size_availability['size_availability_before'] == 0, 'not available', np.where(size_availability['size_availability_before'] < 0.66, 'broken', 'healthy'))
+			size_availability['size_broken_after'] = np.where( size_availability['size_availability_after'] == 0, 'not available', np.where(size_availability['size_availability_after'] < 0.66, 'broken', 'healthy'))
+
+			df = df_new.merge(size_availability,how = 'left', on = ['store_name','vpn'])
+			s2s_output_focus = s2s_output_focus.merge(size_availability,how = 'left', right_on = ['store_name','vpn'], left_on = ['store_name_donor','vpn_donor'])
+
              
             '''6. Output Data Prep Done'''
                  
